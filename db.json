@@ -1,0 +1,158 @@
+{
+  "admin": [
+    {
+      "id": 1,
+      "username": "admin@test.in",
+      "password": "admin"
+    },
+    {
+      "username": "vicky@gmail.com",
+      "password": "123",
+      "id": 2
+    },
+    {
+      "username": "neha@gmail.com",
+      "password": "12345",
+      "id": 3
+    },
+    {
+      "username": "abhijit@gmail.com",
+      "password": "12345",
+      "id": 4
+    },
+    {
+      "username": "vick@cb.in",
+      "password": "123",
+      "id": 5
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "User",
+      "username": "user@test.in",
+      "password": "user"
+    },
+    {
+      "name": "Code Bucket",
+      "username": "code@bucket.in",
+      "password": "123",
+      "id": 2
+    },
+    {
+      "name": "test",
+      "username": "test@cb.in",
+      "password": "test",
+      "id": 3
+    },
+    {
+      "name": "Abhijit",
+      "username": "abhijit@cb.in",
+      "password": "12345",
+      "id": 4
+    }
+  ],
+  "quizzes": [
+    {
+      "id": 1,
+      "category": "General Knowledge",
+      "questions": [
+        {
+          "type": "single",
+          "id": 1,
+          "text": "What is the capital of France?",
+          "options": [
+            "London",
+            "Berlin",
+            "Paris",
+            "Madrid"
+          ],
+          "correctAnswer": "Paris"
+        },
+        {
+          "type": "multiple",
+          "id": 2,
+          "text": "What is the state of capital Chandigarh?",
+          "options": [
+            "Bihar",
+            "Punjab",
+            "Haryana",
+            "Delhi"
+          ],
+          "correctAnswer": [
+            "Punjab",
+            "Haryana"
+          ]
+        },
+        {
+          "text": "What is the scientific name of a butterfly?",
+          "type": "single",
+          "id": 3,
+          "options": [
+            "Apis",
+            "Coleoptera",
+            "Formicidae",
+            "Rhopalocera"
+          ],
+          "correctAnswer": "Formicidae"
+        },
+        {
+          "text": "How hot is the surface of the sun?",
+          "type": "single",
+          "id": 4,
+          "options": [
+            "1,233 K",
+            "5,778 K",
+            "12,130 K",
+            "101,300 K"
+          ],
+          "correctAnswer": "1,233 K"
+        },
+        {
+          "text": "Who are the actors in The Internship?",
+          "type": "single",
+          "id": 5,
+          "options": [
+            "Ben Stiller, Jonah Hill",
+            "Courteney Cox, Matt LeBlanc",
+            "Kaley Cuoco, Jim Parsons",
+            "Vince Vaughn, Owen Wilson"
+          ],
+          "correctAnswer": "Kaley Cuoco, Jim Parsons"
+        },
+        {
+          "text": "What is the capital of Spain?",
+          "type": "single",
+          "id": 6,
+          "options": [
+            "Berlin",
+            "Buenos Aires",
+            "Madrid",
+            "San Juan"
+          ],
+          "correctAnswer": "Buenos Aires"
+        }
+      ]
+    },
+    {
+      "category": "Movies",
+      "id": 2,
+      "type": "single",
+      "questions": [
+        {}
+      ]
+    }
+  ],
+  "leaderboard": [
+    {
+      "id": 1,
+      "username": "Vicky",
+      "score": 70
+    },
+    {
+      "id": 2,
+      "username": "Abhijit",
+      "score": 80
+    }
+  ]
+}
