@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 function StartQuiz() {
-  const { selectedCategory, selectedType, numberOfQuestions } = useParams();
-  console.log(selectedCategory);
+  const [searchParams, setSearchParams ]= useSearchParams();
+  const selectedCategory= (searchParams.get('selectedCategory'));
+  console.log(selectedCategory)
+  const selectedType = (searchParams.get('selectedType'));
+  const numberOfQuestions = (searchParams.get('numberOfQuestions'));
+
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   useEffect(() => {
@@ -13,10 +17,10 @@ function StartQuiz() {
 
   const fetchQuestions = async (category, type, numberOfQuestions) => {
     try {
-      const apiUrl = `http://localhost:8000/quizzes/${selectedCategory}/questions?type=${selectedType}&numberOfQuestions=${numberOfQuestions}`;
+      const apiUrl = `http://localhost:8000/quizzes`;
       const response = await axios.get(apiUrl);
-      setQuestions(response.data);
-     
+      //logic 
+      setQuestions(response.data);     
     } catch (error) {
       console.error("Error fetching questions:", error);
       
@@ -29,7 +33,8 @@ function StartQuiz() {
     }
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const currentQuestion = questions[selectedCategory];
+  console.log(currentQuestion)
 
   return (
     <div>
