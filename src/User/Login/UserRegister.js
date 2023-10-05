@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 function UserRegister() {
 
-
+    const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -28,12 +28,13 @@ function UserRegister() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({name, username, password }),
         });
   
         if (response.status === 201) {
           // Registration successful
           setSuccess("Registration successful. You can now log in.");
+          setName("")
           setUsername(""); // Clear the username field
           setPassword(""); // Clear the password field
           navigate('/')
@@ -55,6 +56,10 @@ function UserRegister() {
       <div className="container-fluid">
             <form className="mx-auto" onSubmit={handleSubmit}>
                 <h4 className="text-center">User Register</h4>
+                <div className="mb-3 mt-5">
+                  <label for="exampleInputEmail1" className="form-label">Enter User Name</label>
+                  <input type="text" className="form-control" onChange={(e) => setName(e.target.value)} />
+                </div>
                 <div className="mb-3 mt-5">
                   <label for="exampleInputEmail1" className="form-label">Enter User Email</label>
                   <input type="email" className="form-control" onChange={(e) => setUsername(e.target.value)} />

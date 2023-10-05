@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './UserLogin.css'
 import { Link } from 'react-router-dom';
+// import { useEffect } from 'react';
 // import { toast } from 'react-toastify';
 
 
@@ -12,6 +13,7 @@ function UserLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  // const [name, setName] = useState("")
 
   const handlSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ function UserLogin() {
       } if (userData[0].password === password) {
         // Password matches, log the user in (you can set a session or token here)
         alert("Login successful!");
-        navigate('/user-dashboard')
+        navigate(`/user-dashboard?username=${username}`)
         
       } 
       else {
@@ -41,6 +43,9 @@ function UserLogin() {
       console.error("Error:", error);
     }
   };
+
+  
+  
 
 
   return (

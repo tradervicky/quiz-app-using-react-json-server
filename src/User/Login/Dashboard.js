@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; 
+import { Link, useSearchParams} from "react-router-dom"; 
 function Dashboard() {
     
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedType, setSelectedType] = useState("");
     const [numberOfQuestions, setNumberOfQuestions] = useState(5); 
-  
-    
+    const [userData, setUserData]= useState([])
+    const [searchParams] = useSearchParams();
+    const userNameLogin = searchParams.get("username");
+
+    //get name send by login user
+    useEffect(() => {
+      axios
+        .get("http://localhost:8000/users") 
+        .then((response) => {
+          setUserData(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching categories:", error);
+        });
+    }, []);
+
+
+    const nameLogin = userData.find((u)=>u.username === userNameLogin)
+    console.log(nameLogin)
+    //fetching category from quizzes for setting quiz
     useEffect(() => {
       axios
         .get("http://localhost:8000/quizzes") 
@@ -34,10 +52,12 @@ function Dashboard() {
     const handleStartQuiz = () => {
 
     };
+    const nameLoginSend = nameLogin?.name
   
     return (
-      <div className="container">
-        <h2>Welcome to the Quiz Dashboard</h2>
+      <div className="container mt-3"  >
+        <form className="mt-3  mx-auto" >
+        <h2>Welcome {nameLogin?.name} </h2>
         <div>
           <h3>Quiz Settings</h3>
           <div className="mb-3">
@@ -52,7 +72,7 @@ function Dashboard() {
             >
               <option value="">Select a category</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option key={category.id} value={category.category}>
                   {category.category}
                 </option>
               ))}
@@ -86,13 +106,14 @@ function Dashboard() {
             />
           </div>
           
-          <Link to={`/start-quiz?selectedCategory=${selectedCategory}&selectedType=${selectedType}&numberOfQuestions=${numberOfQuestions}`}>
+          <Link to={`/start-quiz?selectedCategory=${selectedCategory}&selectedType=${selectedType}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLoginSend}`}>
           <button className="btn btn-primary" onClick={handleStartQuiz}>
             Start Quiz
           </button></Link>
           
           <Link to="/"><button className="btn btn-warning mt-3">Quit Quiz</button></Link>
         </div>
+        </form>
       </div>
     );
   }

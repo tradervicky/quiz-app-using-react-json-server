@@ -40,7 +40,7 @@
       "id": 2
     },
     {
-      "name": "test",
+      "name": "test User",
       "username": "test@cb.in",
       "password": "test",
       "id": 3
@@ -139,7 +139,18 @@
       "id": 2,
       "type": "single",
       "questions": [
-        {}
+        {
+          "text": "What is the capital of Germany?",
+          "type": "single",
+          "id": 1,
+          "options": [
+            "Berlin",
+            "Buenos Aires",
+            "Madrid",
+            "Berlin"
+          ],
+          "correctAnswer": "Berlin "
+        }
       ]
     }
   ],
@@ -153,6 +164,24 @@
       "id": 2,
       "username": "Abhijit",
       "score": 80
+    },
+    {
+      "score": 100,
+      "username": "Vicky test",
+      "id": 3
+    },
+    {
+      "score": 83,
+      "username": "test User",
+      "id": 4
     }
-  ]
+  ],
+  "testdata": [{
+    
+      "username":"",
+      "category":"",
+       "attemptId":[]   
+  }
+]
+
 }

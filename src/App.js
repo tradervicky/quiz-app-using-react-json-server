@@ -14,9 +14,11 @@ import ReadCategory from './Admin/AdminLogin/Quiz Category/ReadCategory';
 import UpdateCategory from './Admin/AdminLogin/Quiz Category/UpdateCategory';
 import ViewUsers from './Admin/AdminLogin/ViewUsers';
 import './App.css';
+import UserLeader from './User/LeaderBoard/UserLeader';
 import Dashboard from './User/Login/Dashboard';
 import UserLogin from './User/Login/UserLogin';
 import UserRegister from './User/Login/UserRegister';
+import ResultPage from './User/Start Quiz/ResultPage';
 import StartQuiz from './User/Start Quiz/StartQuiz';
 
 function App() {
@@ -28,6 +30,10 @@ function App() {
       <Route path="/user-register" element={<UserRegister />}/>
       <Route path="/user-dashboard" element={<Dashboard />}/>
       <Route path="/start-quiz" element={<StartQuiz />}/>
+      <Route path="/result" element={<ResultPage />}/>
+      <Route path="/user-leaderboard" element={<UserLeader />}/>
+
+
         <Route path="/admin" element={<AdminLoginPage />}/>
         <Route path="/admin-page" element={<AdminPage />}/>
         <Route path="/admin-register" element={<AdminRegister />}/>

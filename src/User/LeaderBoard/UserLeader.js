@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {Link} from 'react-router-dom'
 
-function LeaderBoard() {
+function UserLeader() {
     const [viewUsers, setViewUsers] = useState([]);
     useEffect(()=>{
         fetchUsers();
@@ -46,10 +46,10 @@ function LeaderBoard() {
        
                  </tbody>
              </table>
-             <Link to='/admin-page'><button className="btn btn-primary mt-5">Back</button></Link>
+             <Link to='/'><button className="btn btn-primary mt-5">Back</button></Link>
       </form>
     </div>
   )
 }
 
-export default LeaderBoard;
+export default UserLeader;

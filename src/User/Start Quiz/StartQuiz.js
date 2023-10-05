@@ -1,54 +1,181 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 function StartQuiz() {
-  const [searchParams, setSearchParams ]= useSearchParams();
-  const selectedCategory= (searchParams.get('selectedCategory'));
-  console.log(selectedCategory)
-  const selectedType = (searchParams.get('selectedType'));
-  const numberOfQuestions = (searchParams.get('numberOfQuestions'));
-
+  const [searchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("selectedCategory");
+  const selectedType = searchParams.get("selectedType");
+  const numberOfQuestions = parseInt(searchParams.get("numberOfQuestions"));
+  const nameLogin = searchParams.get("nameLogin")
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [isMultipleChoice, setIsMultipleChoice] = useState(false);
+  const [timer, setTimer] = useState(30); // Initial timer value in seconds
+  const [score, setScore] = useState(0)
   useEffect(() => {
     fetchQuestions(selectedCategory, selectedType, numberOfQuestions);
   }, [selectedCategory, selectedType, numberOfQuestions]);
 
-  const fetchQuestions = async (category, type, numberOfQuestions) => {
+  useEffect(() => {
+    // Start the timer when a new question is displayed
+    const timerInterval = setInterval(() => {
+      if (timer > 0) {
+        setTimer(timer - 1);
+      } else {
+        // When the timer reaches 0, automatically move to the next question (if not the last question)
+        if (currentQuestionIndex < questions.length - 1) {
+          handleNextQuestion();
+        }
+      }
+    }, 1000);
+
+    // Clean up the timer when the component unmounts or when the question changes
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [currentQuestionIndex, questions, timer]);
+
+  const fetchQuestions = async (category, type, numQuestions) => {
     try {
       const apiUrl = `http://localhost:8000/quizzes`;
       const response = await axios.get(apiUrl);
-      //logic 
-      setQuestions(response.data);     
+
+      const filteredQuestions = response.data
+        .filter((quiz) => quiz.category === category)
+        .map((quiz) => quiz.questions.filter((question) => question.type === type))
+        .flat();
+
+      const shuffledQuestions = shuffleArray(filteredQuestions);
+
+      setIsMultipleChoice(type === "multiple");
+
+      const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
+      setQuestions(selectedQuestions);
     } catch (error) {
       console.error("Error fetching questions:", error);
-      
     }
   };
 
+  const handleOptionSelect = (option) => {
+    if (isMultipleChoice) {
+      setSelectedOptions((prevSelectedOptions) =>
+        prevSelectedOptions.includes(option)
+          ? prevSelectedOptions.filter((item) => item !== option)
+          : [...prevSelectedOptions, option]
+      );
+    } else {
+      setSelectedOptions([option]);
+    }
+  };
+
+  const currentQuestion = questions[currentQuestionIndex];
+  
+  
   const handleNextQuestion = () => {
+    
+    setUserAnswers([...userAnswers, selectedOptions]);
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedOptions([]);
+      setTimer(30); // Reset the timer for the next question
     }
+    
+
+    if (currentQuestion) {
+      // Check if the selected  are correct
+      const isCorrect = selectedOptions.every((option) =>
+        currentQuestion.correctAnswer.includes(option)
+      );
+
+      if (isCorrect) {
+        setScore(score + 1);
+      }
+    }
+    
   };
+  
+  console.log(score)
+  // console.log(selectedOptions)
 
-  const currentQuestion = questions[selectedCategory];
-  console.log(currentQuestion)
 
+
+  // yaha logic add karna hai
+  const handleSubmit =  ()=>{
+    navigate(`/result?score=${score}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLogin}`)
+  }
+  
+  
   return (
-    <div>
-      <h2>Start Quiz</h2>
-      { questions.length > 0 && currentQuestion ? (
-        <div>
-          <h3>Question {currentQuestionIndex + 1}</h3>
-          <p>{currentQuestion.text}</p>
-          <ul>
-            {currentQuestion.options.map((option, index) => (
-              <li key={index}>{option}</li>
-            ))}
-          </ul>
-          <button onClick={handleNextQuestion}>Next Question</button>
+    <div className="container mt-5">
+      {questions.length > 0 && currentQuestion ? (
+        <div className="card">
+          <div className="card-body">
+          <div className="text-center mt-3">
+              <span className="badge bg-primary">Timer: {timer}s</span>
+            </div>
+            <h5 className="card-title">
+              Question {currentQuestionIndex + 1}
+            </h5>
+            
+            <p className="card-text">{currentQuestion.text}</p>
+            <div>
+              {currentQuestion.options.map((option, index) => (
+                <label key={index} className="form-check">
+                  {isMultipleChoice ? (
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      value={option}
+                      checked={selectedOptions.includes(option)}
+                      onChange={() => handleOptionSelect(option)}
+                    />
+                  ) : (
+                    <input
+                      type="radio"
+                      className="form-check-input"
+                      value={option}
+                      checked={selectedOptions.includes(option)}
+                      onChange={() => handleOptionSelect(option)}
+                    />
+                  )}
+                  <span className="form-check-label">{option}</span>
+                </label>
+              ))}
+            </div>
+            
+            {currentQuestionIndex === questions.length - 1 ? 
+            ( 
+              <>
+              <button
+              className="btn btn-primary mt-3"
+              onClick={handleNextQuestion}
+              disabled={isMultipleChoice ? false : !selectedOptions.length}
+              >Next
+              </button>
+              <button
+                className="btn btn-primary mt-3"
+                onClick={handleSubmit}
+                disabled={!selectedOptions.length}
+              >
+                Submit Test
+              </button>
+              </>
+
+            ) : (
+              <button
+                className="btn btn-primary mt-3"
+                onClick={handleNextQuestion}
+                disabled={isMultipleChoice ? false : !selectedOptions.length}
+              >
+                Next Question
+              </button>
+            )}
+          </div>
         </div>
       ) : (
         <p>No questions available.</p>
@@ -57,60 +184,14 @@ function StartQuiz() {
   );
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
+
 export default StartQuiz;
-
-
-
-
-
-
-
-// import axios from 'axios';
-// import React from 'react'
-// import { useState } from 'react';
-// import { useEffect } from 'react'
-// import {Link} from 'react-router-dom'
-
-// function StartQuiz() {
-//   const [userName, setUserName] = useState("");
-//   useEffect(()=>{
-//     fetchUserName();
-//   },[])
-//   const fetchUserName = async () => {
-//     try {
-//       const response = await axios.get("  http://localhost:8000/users");
-//       setUserName(response.data.name);
-//     } catch (error) {
-//       console.error("Error fetching user name:", error);
-//     }
-//   };
-//   const fetchUserData = async (userId) => {
-//     try {
-//       const response = await axios.get('http://localhost:8000/users')
-//       setUserName(response.data.name);
-//     } catch (error) {
-//       console.error("Error fetching user data:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="card mx-auto mt-5" style={{width:"40%"}}>
-//   <div className="card-body">
-//     <h5 className="card-title text-center">Welcome {}</h5>
-//     <p className="card-text">Question</p>
-//   </div>
-//   <ul className="list-group list-group-flush">
-//     <li className="list-group-item">An item</li>
-//     <li className="list-group-item">A second item</li>
-//     <li className="list-group-item">A third item</li>
-//     <li className="list-group-item">A Fourth item</li>
-
-//   </ul>
-//   <div className="card-body d-flex justify-content-between">
-//   <Link to='/'><button className="btn btn-danger">Quit</button></Link>
-//   <button className="btn btn-success">Next</button>
-//   </div>
-// </div>
-// )}
-
-// export default StartQuiz
