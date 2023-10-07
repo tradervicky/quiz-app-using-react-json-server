@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-// import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 function Read() {
   const [questions, setQuestions] = useState([]);
 
@@ -12,12 +12,12 @@ function Read() {
   const fetchQuizData = async () => {
     try {
       
-      const response = await axios.get("http://localhost:8000/quizzes");
+      const response = await axios.get(" http://localhost:8000/questions");
 
       if (response.status === 200) {
         const quizData = response.data;
 
-        setQuestions(quizData[0].questions); 
+        setQuestions(quizData); 
         // console.log(quizData[0].questions)
       } else {
         console.error("Failed to fetch quiz data");
@@ -33,12 +33,16 @@ function Read() {
     <>
 
 <div className="m-2">
+  <div className="d-flex justify-content-xl-between mx-auto " style={{width: "80%"}}>
       <h2 className="text-center text-light">Quiz Questions</h2>
+      <Link to='/quiz-questions'><button className="btn btn-warning">Back</button></Link>
+      </div>
       
       <div className="row mx-5">
         {questions.map((question) => (
           <div key={question.id} className="col-md-4 mb-3">
             <div className="card">
+            <h3 className="text-center" style={{color:"red"}}>Question Type :{question.type}</h3>
               <div className="card-body">
                 <h3 className="card-title">{question.id}.{question.text}</h3>
                 {question.type === "single" ? (

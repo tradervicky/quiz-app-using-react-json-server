@@ -20,6 +20,8 @@ import UserLogin from './User/Login/UserLogin';
 import UserRegister from './User/Login/UserRegister';
 import ResultPage from './User/Start Quiz/ResultPage';
 import StartQuiz from './User/Start Quiz/StartQuiz';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -48,6 +50,7 @@ function App() {
         <Route path="/leaderboard" element={<LeaderBoard />}/>
       </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 }

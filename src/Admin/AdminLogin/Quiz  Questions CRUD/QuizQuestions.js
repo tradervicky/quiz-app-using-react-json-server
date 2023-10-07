@@ -4,7 +4,7 @@ function QuizQuestions() {
   return (
     <div className="container-fluid">
       <div className="container-fluid">
-        <form className="mx-auto " >
+        <form className="mx-auto mt-5 " >
           <h4 className="text-center">Quiz Questions</h4>
           
           

@@ -14,7 +14,7 @@ function DeleteCategory() {
 
   const fetchQuizzes = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/quizzes");
+      const response = await axios.get(" http://localhost:8000/category");
       setQuizzes(response.data);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
@@ -29,7 +29,7 @@ function DeleteCategory() {
 
     try {
       const response = await axios.delete(
-        `http://localhost:8000/quizzes/${selectedQuiz.id}`
+        ` http://localhost:8000/category/${selectedQuiz.id}`
       );
       console.log("Quiz category deleted successfully:", response.data);
       //toast
@@ -59,7 +59,7 @@ function DeleteCategory() {
             onClick={() => setSelectedQuiz(quiz)}
             className={selectedQuiz === quiz ? "selected" : ""}
           >
-            {quiz.category}
+            {quiz.name}
           </li>
           </a>
         ))}

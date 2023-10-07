@@ -8,9 +8,10 @@ function ReadCategory() {
     fetchCategory();
   },[])
   const fetchCategory =()=>{
-    axios.get(' http://localhost:8000/quizzes')
+    axios.get(' http://localhost:8000/category')
     .then((res)=>{
-        setCategories(res.data)
+        setCategories(res?.data)
+        console.log(categories)
     })
     .catch(error => {
         console.error('Error fetching components:', error);
@@ -30,7 +31,7 @@ function ReadCategory() {
                 
         {categories.map(comp => (
             <tr key={categories.id} className="table-secondary ">
-                <td>{comp.category}</td>
+                <td>{comp.name}</td>
                 {/* <td className="d-flex justify-content-center">
               
                 </td> */}

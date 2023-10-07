@@ -5,9 +5,11 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 function StartQuiz() {
   const [searchParams] = useSearchParams();
   const selectedCategory = searchParams.get("selectedCategory");
+  console.log(selectedCategory)
   const selectedType = searchParams.get("selectedType");
   const numberOfQuestions = parseInt(searchParams.get("numberOfQuestions"));
   const nameLogin = searchParams.get("nameLogin")
+  const UserName = searchParams.get("UserName")
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -41,11 +43,11 @@ function StartQuiz() {
 
   const fetchQuestions = async (category, type, numQuestions) => {
     try {
-      const apiUrl = `http://localhost:8000/quizzes`;
+      const apiUrl = `http://localhost:8000/questions`;
       const response = await axios.get(apiUrl);
 
       const filteredQuestions = response.data
-        .filter((quiz) => quiz.category === category)
+        .filter((quiz) => quiz.catId === category)
         .map((quiz) => quiz.questions.filter((question) => question.type === type))
         .flat();
 
@@ -92,7 +94,7 @@ function StartQuiz() {
         currentQuestion.correctAnswer.includes(option)
       );
 
-      if (isCorrect) {
+      if (isCorrect && timer !==0) {
         setScore(score + 1);
       }
     }
@@ -108,6 +110,14 @@ function StartQuiz() {
   const handleSubmit =  ()=>{
     navigate(`/result?score=${score}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLogin}`)
   }
+  
+  // useEffect(()=>{
+  //   axios.post('http://localhost:8000/testdata',{
+  //     "username": UserName,
+  //     "category": selectedCategory,
+  //      "attemptId":[...currentQuestion.id]  
+  //   })
+  // },[])
   
   
   return (

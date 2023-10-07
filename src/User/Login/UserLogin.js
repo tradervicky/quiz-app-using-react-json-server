@@ -44,10 +44,6 @@ function UserLogin() {
     }
   };
 
-  
-  
-
-
   return (
     <div className='container-fluid'>
       
