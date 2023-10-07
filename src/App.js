@@ -22,6 +22,8 @@ import ResultPage from './User/Start Quiz/ResultPage';
 import StartQuiz from './User/Start Quiz/StartQuiz';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Update from './Admin/AdminLogin/Quiz  Questions CRUD/Update/Update';
+import Delete from './Admin/AdminLogin/Quiz  Questions CRUD/Delete/Delete';
 
 function App() {
   return (
@@ -34,8 +36,6 @@ function App() {
       <Route path="/start-quiz" element={<StartQuiz />}/>
       <Route path="/result" element={<ResultPage />}/>
       <Route path="/user-leaderboard" element={<UserLeader />}/>
-
-
         <Route path="/admin" element={<AdminLoginPage />}/>
         <Route path="/admin-page" element={<AdminPage />}/>
         <Route path="/admin-register" element={<AdminRegister />}/>
@@ -48,6 +48,9 @@ function App() {
         <Route path="/create-question" element={<QuizQuestionCreate />}/>
         <Route path="/read-quiz-questions" element={<Read />}/>                
         <Route path="/leaderboard" element={<LeaderBoard />}/>
+        <Route path="/update-question" element={<Update />}/>
+        <Route path="/delete-question" element={<Delete />}/>
+
       </Routes>
       </BrowserRouter>
       <ToastContainer />

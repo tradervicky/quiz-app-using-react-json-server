@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './AdminLoginPage.css'
 import { Link } from 'react-router-dom';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 function AdminLoginPage() {
@@ -29,7 +29,10 @@ function AdminLoginPage() {
         setError("User not found. Please check your username.");
       } if (userData[0].password === password) {
         // Password matches, log the user 
-        alert("Login successful!");
+        toast.success("Login successfully!", {
+          position: "top-right",
+          autoClose: 3000, // Auto close the notification after 3 seconds
+        });
         navigate('/admin-page')
         
       } 

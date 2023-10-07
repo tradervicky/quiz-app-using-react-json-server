@@ -70,21 +70,6 @@
   ],
   "questions": [
     {
-      "type": "single",
-      "catId": 1,
-      "id": 1,
-      "text": "What is the capital of France?",
-      "options": [
-        "London",
-        "Berlin",
-        "Paris",
-        "Madrid"
-      ],
-      "correctAnswer": [
-        "Paris"
-      ]
-    },
-    {
       "type": "multiple",
       "catId": 1,
       "id": 2,
@@ -131,51 +116,6 @@
       ]
     },
     {
-      "text": "Who are the actors in The Internship?",
-      "type": "single",
-      "catId": 1,
-      "id": 5,
-      "options": [
-        "Ben Stiller, Jonah Hill",
-        "Courteney Cox, Matt LeBlanc",
-        "Kaley Cuoco, Jim Parsons",
-        "Vince Vaughn, Owen Wilson"
-      ],
-      "correctAnswer": [
-        "Kaley Cuoco, Jim Parsons"
-      ]
-    },
-    {
-      "text": "What is the capital of Spain?",
-      "type": "single",
-      "catId": 1,
-      "id": 6,
-      "options": [
-        "Berlin",
-        "Buenos Aires",
-        "Madrid",
-        "San Juan"
-      ],
-      "correctAnswer": [
-        "Buenos Aires"
-      ]
-    },
-    {
-      "text": "What is the capital of Germany?",
-      "type": "single",
-      "catId": 2,
-      "id": 6,
-      "options": [
-        "Berlin",
-        "Buenos Aires",
-        "Madrid",
-        "Berlin"
-      ],
-      "correctAnswer": [
-        "Berlin "
-      ]
-    },
-    {
       "type": "single",
       "catId": 1,
       "text": "Who is the Prime minister of India?",
@@ -200,8 +140,23 @@
         "DDLJ",
         "Not found"
       ],
-      "correctAnswer": "Jawan",
+      "correctAnswer": [
+        "Jawan"
+      ],
       "id": 8
+    },
+    {
+      "type": "single",
+      "catId": 2,
+      "text": "What is the last movie in 2022?",
+      "options": [
+        "Ram teri ganga Maili ho gayi",
+        "Black Adam",
+        "Dr Strange 2",
+        "Fury"
+      ],
+      "correctAnswer": "Dr Strange 2",
+      "id": 9
     }
   ],
   "leaderboard": [

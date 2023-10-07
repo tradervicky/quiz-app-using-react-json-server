@@ -18,9 +18,6 @@ function QuizQuestions() {
           <Link to="/"> <button type="submit" className="btn btn-primary mt-5">
             Update Question
           </button></Link>
-          <Link to="/"> <button type="submit" className="btn btn-primary mt-5">
-            Delete Question
-          </button></Link>
           <Link to="/admin-page"><button className="btn btn-danger mt-5">
             Back
           </button></Link>

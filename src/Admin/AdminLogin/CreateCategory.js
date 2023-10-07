@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 
 function CreateCategory() {
@@ -20,7 +21,13 @@ function CreateCategory() {
       axios
         .post(apiUrl, categoryData)
         .then((response) => {
-          alert("Category added:", response.data);
+          
+          toast.success("Category added successfully!", {
+            position: "top-right",
+            autoClose: 3000, // Auto close the notification after 3 seconds
+          });
+
+
           navigate('/admin-page')
           setNewCategory(""); 
         })

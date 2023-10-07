@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './UserLogin.css'
 import { Link } from 'react-router-dom';
 // import { useEffect } from 'react';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 function UserLogin() {
@@ -31,7 +31,11 @@ function UserLogin() {
         setError("User not found. Please check your username.");
       } if (userData[0].password === password) {
         // Password matches, log the user in (you can set a session or token here)
-        alert("Login successful!");
+         // Show a success toast notification
+      toast.success("Login successfully!", {
+        position: "top-right",
+        autoClose: 3000, // Auto close the notification after 3 seconds
+      });
         navigate(`/user-dashboard?username=${username}`)
         
       } 

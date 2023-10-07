@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {Link} from 'react-router-dom'
 function Read() {
+  
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function Read() {
     }
   };
   console.log(questions);
+  
 
   return (
     
@@ -78,6 +80,10 @@ function Read() {
                 <div >
                   <h4 className="text-center">Correct Ans</h4>
                 {question.type === "single" ? <p className="text-center">  {question.correctAnswer}</p> :  question.correctAnswer.map((ans)=> <p className="text-center">{ans}<br/></p>) }
+                </div>
+                <div className="d-flex justify-content-xl-between">
+                <Link to={`/delete-question?selectdId=${question.id}`}>  <button className="btn btn-danger" >Delete</button> </Link>
+                  <Link to={`/update-question`}><button className="btn btn-warning" >Update</button></Link>
                 </div>
               </div>
             </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {Link} from 'react-router-dom'
-// import { toast, ToastContainer } from "react-toastify";
-// import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+
 
 function DeleteCategory() {
   const [quizzes, setQuizzes] = useState([]);
@@ -31,6 +31,10 @@ function DeleteCategory() {
       const response = await axios.delete(
         ` http://localhost:8000/category/${selectedQuiz.id}`
       );
+      toast.success("category Deleted!", {
+        position: "top-right",
+        autoClose: 3000, // Auto close the notification after 3 seconds
+      });
       console.log("Quiz category deleted successfully:", response.data);
       //toast
       // toast.success("Category deleted successfully", {
