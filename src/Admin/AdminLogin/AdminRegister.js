@@ -50,35 +50,6 @@ function AdminRegister() {
 
 
 
-
-
-
-//     const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError("");
-//     try {
-//       const response = await axios.post("http://localhost:8000/admin/", {
-//         username,
-//         password,
-//       });
-//       if (response.status === 200) {
-//         // Authentication successful
-//         navigate("/admin-page"); // Navigate to admin dashboard
-//       } 
-//       else {
-//         setError("Invalid username or password. Please try again.");
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//       setError("An error occurred while logging in.");
-//     }
-//   };
-
   return (
     <div classNameName='container-fluid'>
       

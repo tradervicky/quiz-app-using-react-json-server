@@ -5,28 +5,38 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 function StartQuiz() {
   const [searchParams] = useSearchParams();
   const selectedCategory = searchParams.get("selectedCategory");
-  console.log(selectedCategory)
   const selectedType = searchParams.get("selectedType");
   const numberOfQuestions = parseInt(searchParams.get("numberOfQuestions"));
-  const nameLogin = searchParams.get("nameLogin")
-  const UserName = searchParams.get("UserName")
+  const nameLogin = searchParams.get("nameLogin");
+  const UserName = searchParams.get("UserName");
   const navigate = useNavigate();
+
+
+
+  // Initialize state from localStorage or use default values
   const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [userAnswers, setUserAnswers] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
+    const savedCurrentQuestionIndex = parseInt(
+      localStorage.getItem("currentQuestionIndex")
+    );
+    return isNaN(savedCurrentQuestionIndex) ? 0 : savedCurrentQuestionIndex;
+  });
+  const [selectedOptions, setSelectedOptions] = useState(
+    JSON.parse(localStorage.getItem("selectedOptions")) || []
+  );
+  const [userAnswers, setUserAnswers] = useState(
+    JSON.parse(localStorage.getItem("userAnswers")) || []
+  );
   const [isMultipleChoice, setIsMultipleChoice] = useState(false);
-  // const [timer, setTimer] = useState(30); // timer value in seconds
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState(
+    parseInt(localStorage.getItem("score")) || 0
+  );
   const [timer, setTimer] = useState(
     parseInt(localStorage.getItem("timer")) || 30
   );
-  // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
-  //   parseInt(localStorage.getItem("currentQuestionIndex")) || 0
-  // );
+
   useEffect(() => {
     fetchQuestions(selectedCategory, selectedType, numberOfQuestions);
-   
   }, [selectedCategory, selectedType, numberOfQuestions]);
 
   useEffect(() => {
@@ -49,19 +59,45 @@ function StartQuiz() {
     };
   }, [currentQuestionIndex, questions, timer]);
 
+  useEffect(() => {
+    // Check if there is saved state in localStorage and update the state accordingly
+    const savedSelectedOptions = JSON.parse(
+      localStorage.getItem("selectedOptions")
+    );
+    if (Array.isArray(savedSelectedOptions) && savedSelectedOptions.length > 0) {
+      setSelectedOptions(savedSelectedOptions);
+    }
+    const savedUserAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+    if (Array.isArray(savedUserAnswers) && savedUserAnswers.length > 0) {
+      setUserAnswers(savedUserAnswers);
+    }
+    const savedScore = parseInt(localStorage.getItem("score"));
+    if (!isNaN(savedScore) && savedScore > 0) {
+      setScore(savedScore);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Update localStorage whenever the currentQuestionIndex changes
+    localStorage.setItem("currentQuestionIndex", currentQuestionIndex.toString());
+  }, [currentQuestionIndex]);
+
   const fetchQuestions = async (category, type, numQuestions) => {
     try {
       const apiUrl = `http://localhost:8000/questions`;
       const response = await axios.get(apiUrl);
-      
-      const filteredQuestions = response.data
-      .filter((question) => question.catId === parseInt(category) && question.type === type);
-        console.log(filteredQuestions)
-      const shuffledQuestions = shuffleArray(filteredQuestions);
+
+      const filteredQuestions = response.data.filter(
+        (question) =>
+          question.catId === parseInt(category) && question.type === type
+
+          //logic for not reapeted question 
+        //  &&  !answeredQuestions.includes(question.id)
+      );
 
       setIsMultipleChoice(type === "multiple");
 
-      const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
+      const selectedQuestions = filteredQuestions.slice(0, numQuestions);
       setQuestions(selectedQuestions);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -81,10 +117,8 @@ function StartQuiz() {
   };
 
   const currentQuestion = questions[currentQuestionIndex];
-  
-  
+
   const handleNextQuestion = () => {
-    
     setUserAnswers([...userAnswers, selectedOptions]);
 
     if (currentQuestionIndex < questions.length - 1) {
@@ -92,52 +126,55 @@ function StartQuiz() {
       setSelectedOptions([]);
       setTimer(30); // Reset the timer for the next question
     }
-    
 
     if (currentQuestion) {
-      // Check if the selected  are correct
+      //logic for not reapeated question
+      // const currentQuestionId = questions[currentQuestionIndex].id;
+
+    // Add the current question's ID to the list of answered questions
+    // setAnsweredQuestions([...answeredQuestions, currentQuestionId]);
+// end
+      // Check if the selected options are correct
       const isCorrect = selectedOptions.every((option) =>
         currentQuestion.correctAnswer.includes(option)
       );
 
-      if (isCorrect && timer !==0) {
+      if (isCorrect && timer !== 0) {
         setScore(score + 1);
+        localStorage.setItem("score", score + 1);
       }
     }
-    
   };
-  
-  console.log(score)
-  // console.log(selectedOptions)
 
+  // Logic to submit the test
+  const handleSubmit = () => {
+    localStorage.clear(); // Clear local storage when the test is completed
+    navigate(
+      `/result?score=${score}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLogin}`
+    );
+  };
 
+    // logic for not repeated question again
+    const [attemptedQuestionData , setAttemptedQuestionData ] = useState([])
+    useEffect(()=>{
+      setAttemptedQuestionData((prevData) => [...prevData, currentQuestionIndex]);
+    },[currentQuestion])
+    console.log(attemptedQuestionData)
+  
+  //end
 
-  // yaha logic add karna hai
-  const handleSubmit =  ()=>{
-    navigate(`/result?score=${score}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLogin}`)
-  }
-  
-  // useEffect(()=>{
-  //   axios.post('http://localhost:8000/testdata',{
-  //     "username": UserName,
-  //     "category": selectedCategory,
-  //      "attemptId":[...currentQuestion.id]  
-  //   })
-  // },[])
-  
-  
   return (
     <div className="container mt-5">
       {questions.length > 0 && currentQuestion ? (
         <div className="card">
           <div className="card-body">
-          <div className="text-center mt-3">
+            <div className="text-center mt-3">
               <span className="badge bg-primary">Timer: {timer}s</span>
             </div>
             <h5 className="card-title">
               Question {currentQuestionIndex + 1}
             </h5>
-            
+
             <p className="card-text">{currentQuestion.text}</p>
             <div>
               {currentQuestion.options.map((option, index) => (
@@ -163,25 +200,24 @@ function StartQuiz() {
                 </label>
               ))}
             </div>
-            
-            {currentQuestionIndex === questions.length - 1 ? 
-            ( 
-              <>
-              <button
-              className="btn btn-primary mt-3"
-              onClick={handleNextQuestion}
-              disabled={isMultipleChoice ? false : !selectedOptions.length}
-              >Next
-              </button>
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handleSubmit}
-                disabled={!selectedOptions.length}
-              >
-                Submit Test
-              </button>
-              </>
 
+            {currentQuestionIndex === questions.length - 1 ? (
+              <>
+                <button
+                  className="btn btn-primary mt-3"
+                  onClick={handleNextQuestion}
+                  disabled={isMultipleChoice ? false : !selectedOptions.length}
+                >
+                  Next
+                </button>
+                <button
+                  className="btn btn-primary mt-3"
+                  onClick={handleSubmit}
+                  disabled={!selectedOptions.length}
+                >
+                  Submit Test
+                </button>
+              </>
             ) : (
               <button
                 className="btn btn-primary mt-3"
@@ -200,17 +236,12 @@ function StartQuiz() {
   );
 }
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-
-
 export default StartQuiz;
+
+
+
+
+// this code below is resuffle the questions 
 
 // import React, { useState, useEffect } from "react";
 // import axios from "axios";
@@ -224,23 +255,31 @@ export default StartQuiz;
 //   const nameLogin = searchParams.get("nameLogin");
 //   const UserName = searchParams.get("UserName");
 //   const navigate = useNavigate();
+
+//   // Initialize state from localStorage or use default values
 //   const [questions, setQuestions] = useState([]);
-//   const [selectedOptions, setSelectedOptions] = useState([]);
-//   const [userAnswers, setUserAnswers] = useState([]);
+//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
+//     const savedCurrentQuestionIndex = parseInt(
+//       localStorage.getItem("currentQuestionIndex")
+//     );
+//     return isNaN(savedCurrentQuestionIndex) ? 0 : savedCurrentQuestionIndex;
+//   });
+//   const [selectedOptions, setSelectedOptions] = useState(
+//     JSON.parse(localStorage.getItem("selectedOptions")) || []
+//   );
+//   const [userAnswers, setUserAnswers] = useState(
+//     JSON.parse(localStorage.getItem("userAnswers")) || []
+//   );
 //   const [isMultipleChoice, setIsMultipleChoice] = useState(false);
+//   const [score, setScore] = useState(
+//     parseInt(localStorage.getItem("score")) || 0
+//   );
 //   const [timer, setTimer] = useState(
 //     parseInt(localStorage.getItem("timer")) || 30
 //   );
-//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
-//     parseInt(localStorage.getItem("currentQuestionIndex")) || 0
-//   );
-//   const [score, setScore] = useState(0);
 
 //   useEffect(() => {
 //     fetchQuestions(selectedCategory, selectedType, numberOfQuestions);
-//     if (currentQuestionIndex !== 0) {
-//       setCurrentQuestionIndex(currentQuestionIndex);
-//     }
 //   }, [selectedCategory, selectedType, numberOfQuestions]);
 
 //   useEffect(() => {
@@ -264,40 +303,37 @@ export default StartQuiz;
 //   }, [currentQuestionIndex, questions, timer]);
 
 //   useEffect(() => {
-//     // Save the current quiz state to localStorage whenever it changes
-//     localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
-//     localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
-//     localStorage.setItem("score", score);
-//   }, [selectedOptions, userAnswers, score]);
-
-//   // Load the quiz state from localStorage when the component mounts
-//   useEffect(() => {
-//     const storedOptions = JSON.parse(localStorage.getItem("selectedOptions"));
-//     const storedAnswers = JSON.parse(localStorage.getItem("userAnswers"));
-//     const storedScore = localStorage.getItem("score");
-
-//     if (storedOptions) {
-//       setSelectedOptions(storedOptions);
+//     // Check if there is saved state in localStorage and update the state accordingly
+//     const savedSelectedOptions = JSON.parse(
+//       localStorage.getItem("selectedOptions")
+//     );
+//     if (Array.isArray(savedSelectedOptions) && savedSelectedOptions.length > 0) {
+//       setSelectedOptions(savedSelectedOptions);
 //     }
-//     if (storedAnswers) {
-//       setUserAnswers(storedAnswers);
+//     const savedUserAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+//     if (Array.isArray(savedUserAnswers) && savedUserAnswers.length > 0) {
+//       setUserAnswers(savedUserAnswers);
 //     }
-//     if (storedScore) {
-//       setScore(parseInt(storedScore));
+//     const savedScore = parseInt(localStorage.getItem("score"));
+//     if (!isNaN(savedScore) && savedScore > 0) {
+//       setScore(savedScore);
 //     }
 //   }, []);
+
+//   useEffect(() => {
+//     // Update localStorage whenever the currentQuestionIndex changes
+//     localStorage.setItem("currentQuestionIndex", currentQuestionIndex.toString());
+//   }, [currentQuestionIndex]);
 
 //   const fetchQuestions = async (category, type, numQuestions) => {
 //     try {
 //       const apiUrl = `http://localhost:8000/questions`;
 //       const response = await axios.get(apiUrl);
-      
-//       const filteredQuestions = response.data
-//         .filter(
-//           (question) =>
-//             question.catId === parseInt(category) && question.type === type
-//         )
-//         .flatMap((question) => question.questions);
+
+//       const filteredQuestions = response.data.filter(
+//         (question) =>
+//           question.catId === parseInt(category) && question.type === type
+//       );
 //       console.log(filteredQuestions);
 //       const shuffledQuestions = shuffleArray(filteredQuestions);
 
@@ -328,12 +364,6 @@ export default StartQuiz;
 //     setUserAnswers([...userAnswers, selectedOptions]);
 
 //     if (currentQuestionIndex < questions.length - 1) {
-//       // Save the current question index to localStorage
-//       localStorage.setItem(
-//         "currentQuestionIndex",
-//         currentQuestionIndex + 1
-//       );
-
 //       setCurrentQuestionIndex(currentQuestionIndex + 1);
 //       setSelectedOptions([]);
 //       setTimer(30); // Reset the timer for the next question
@@ -347,18 +377,14 @@ export default StartQuiz;
 
 //       if (isCorrect && timer !== 0) {
 //         setScore(score + 1);
+//         localStorage.setItem("score", score + 1);
 //       }
 //     }
 //   };
 
+//   // Logic to submit the test
 //   const handleSubmit = () => {
-//     // Clear the stored quiz state in localStorage when the quiz is completed
-//     localStorage.removeItem("timer");
-//     localStorage.removeItem("currentQuestionIndex");
-//     localStorage.removeItem("selectedOptions");
-//     localStorage.removeItem("userAnswers");
-//     localStorage.removeItem("score");
-
+//     localStorage.clear(); // Clear local storage when the test is completed
 //     navigate(
 //       `/result?score=${score}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLogin}`
 //     );
@@ -446,3 +472,9 @@ export default StartQuiz;
 // }
 
 // export default StartQuiz;
+
+
+
+
+
+

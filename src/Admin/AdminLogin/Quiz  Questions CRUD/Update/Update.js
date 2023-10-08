@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSearchParams,Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 function Update({ match }) {
+  const [searchParams] = useSearchParams();
+  const questionId = parseInt(searchParams.get("selectdId"));
+
   const [questionData, setQuestionData] = useState({
     text: "",
     options: [],
-    correctAnswer: [],
+    correctAnswer: [], // Use an array to store correct answers
   });
-
-  const questionId = match.params.id; // Assuming you have a route parameter for the question ID
 
   useEffect(() => {
     // Fetch existing question data for the specified question ID
@@ -41,15 +45,30 @@ function Update({ match }) {
   };
 
   const handleCorrectAnswerChange = (e) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
+    const selectedValue = e.target.value;
 
-    setQuestionData({
-      ...questionData,
-      correctAnswer: selectedOptions,
-    });
+    // Check if the value is already in the correctAnswer array
+    const isAlreadySelected = questionData.correctAnswer.includes(selectedValue);
+
+    if (isAlreadySelected) {
+      // If it's already selected, remove it from the array
+      const updatedCorrectAnswer = questionData.correctAnswer.filter(
+        (value) => value !== selectedValue
+      );
+
+      setQuestionData({
+        ...questionData,
+        correctAnswer: updatedCorrectAnswer,
+      });
+    } else {
+      // If it's not selected, add it to the array
+      const updatedCorrectAnswer = [...questionData.correctAnswer, selectedValue];
+
+      setQuestionData({
+        ...questionData,
+        correctAnswer: updatedCorrectAnswer,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -60,7 +79,13 @@ function Update({ match }) {
       .put(`http://localhost:8000/questions/${questionId}`, questionData)
       .then((response) => {
         // Handle success and provide feedback to the admin
-        console.log("Question updated successfully");
+
+        toast.success("Updated successfully!", {
+          position: "top-right",
+          autoClose: 3000, // Auto close the notification after 3 seconds
+        });
+        
+        // console.log("Question updated successfully");
       })
       .catch((error) => {
         console.error("Error updating question:", error);
@@ -69,21 +94,24 @@ function Update({ match }) {
   };
 
   return (
-    <div>
+    <div className="container-fluid">
+        <form onSubmit={handleSubmit} className="mx-auto mt-5">
       <h1>Update Question</h1>
-      <form onSubmit={handleSubmit}>
+      
         <div>
           <label>Question Text:</label>
-          <textarea
+          <textarea 
+            className="form-control"
             name="text"
             value={questionData.text}
             onChange={handleInputChange}
           />
         </div>
         <div>
-          <label>Options:</label>
+          <label>Options:</label><br />
           {questionData.options.map((option, index) => (
             <input
+              className="form-control"
               key={index}
               type="text"
               value={option}
@@ -93,19 +121,33 @@ function Update({ match }) {
         </div>
         <div>
           <label>Correct Answer:</label>
-          <select
-            multiple
-            value={questionData.correctAnswer}
-            onChange={handleCorrectAnswerChange}
-          >
-            {questionData.options.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+          {questionData.options.map((option, index) => (
+            <div key={index}>
+              {questionData.options.length > 1 ? (
+                <input
+                  type="checkbox"
+                  value={option}
+                  checked={questionData.correctAnswer.includes(option)}
+                  onChange={handleCorrectAnswerChange}
+                />
+              ) : (
+                <input
+                  type="radio"
+                  value={option}
+                  checked={questionData.correctAnswer[0] === option}
+                  onChange={handleCorrectAnswerChange}
+                />
+              )}
+              {option}
+            </div>
+          ))}
         </div>
-        <button type="submit">Update Question</button>
+
+         <button type="submit" className="btn btn-primary mb-2 mt-2">Update Question</button>
+        <Link to={'/read-quiz-questions'}><button className="btn btn-warning align-self-center" >
+        Back
+      </button></Link>
+
       </form>
     </div>
   );

@@ -83,7 +83,7 @@ function Read() {
                 </div>
                 <div className="d-flex justify-content-xl-between">
                 <Link to={`/delete-question?selectdId=${question.id}`}>  <button className="btn btn-danger" >Delete</button> </Link>
-                  <Link to={`/update-question`}><button className="btn btn-warning" >Update</button></Link>
+                  <Link to={`/update-question?selectdId=${question.id}`}><button className="btn btn-warning" >Update</button></Link>
                 </div>
               </div>
             </div>
