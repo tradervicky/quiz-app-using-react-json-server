@@ -13,6 +13,7 @@ function UserLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   // const [name, setName] = useState("")
 
   const handlSubmit = async (e) => {
@@ -26,7 +27,6 @@ function UserLogin() {
     try {
       const response = await fetch(`http://localhost:8000/users?username=${username}`);
       const userData = await response.json();
-
       if (userData.length === 0) {
         setError("User not found. Please check your username.");
       } if (userData[0].password === password) {

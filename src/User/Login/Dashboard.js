@@ -81,7 +81,7 @@ function Dashboard() {
       setError(true);
       return;
     } else {
-      navigate(`/start-quiz?UserName=${userNameLogin}&selectedCategory=${selectedCategoryData.id}&selectedType=${selectedType}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLoginSend}`);
+      navigate(`/start-quiz?UserName=${userNameLogin}&selectedCategory=${selectedCategoryData.id}&selectedType=${selectedType}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLoginSend}&userId=${nameLogin.id}`);
     }
   };
 

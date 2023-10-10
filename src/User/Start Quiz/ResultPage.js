@@ -31,6 +31,7 @@ function ResultPage() {
         <p>Name : {nameLogin}</p>
       <p>Your Score: {ScorePercentage} </p>
      <Link to='/user-leaderboard'> <button className="btn btn-warning mt-3" onClick={fetchLeaderBoard}>LeaderBoard</button></Link>
+     <Link to='/'> <button className="btn btn-danger mt-3" onClick={fetchLeaderBoard}>Log Out</button></Link>
         </form>
 
     </div>
