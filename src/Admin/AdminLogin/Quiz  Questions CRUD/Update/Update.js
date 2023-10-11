@@ -45,54 +45,7 @@ function Update({ match }) {
   };
   
 
-  // const handleCorrectAnswerChange = (e) => {
-  //   const selectedValue = e.target.value;
-
-  //   // Check if the value is already in the correctAnswer array
-  //   const isAlreadySelected = questionData.correctAnswer.includes(selectedValue);
-
-  //   if (isAlreadySelected) {
-  //     // If it's already selected, remove it from the array
-  //     const updatedCorrectAnswer = questionData.correctAnswer.filter(
-  //       (value) => value !== selectedValue
-  //     );
-
-  //     setQuestionData({
-  //       ...questionData,
-  //       correctAnswer: updatedCorrectAnswer,
-  //     });
-  //   } else {
-  //     // If it's not selected, add it to the array
-  //     const updatedCorrectAnswer = [...questionData.correctAnswer, selectedValue];
-
-  //     setQuestionData({
-  //       ...questionData,
-  //       correctAnswer: updatedCorrectAnswer,
-  //     });
-  //   }
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   // Send a PUT request to update the question
-  //   axios
-  //     .put(`http://localhost:8000/questions/${questionId}`, questionData)
-  //     .then((response) => {
-  //       // Handle success and provide feedback to the admin
-
-  //       toast.success("Updated successfully!", {
-  //         position: "top-right",
-  //         autoClose: 3000, // Auto close the notification after 3 seconds
-  //       });
-        
-  //       // console.log("Question updated successfully");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating question:", error);
-  //       // Handle errors and display error messages
-  //     });
-  // };
+ 
 
   const handleCorrectAnswerChange = (e) => {
     const selectedValue = e.target.value;
@@ -104,10 +57,15 @@ function Update({ match }) {
         (value) => value !== selectedValue
       );
   
-      setQuestionData({
-        ...questionData,
-        correctAnswer: updatedCorrectAnswer,
-      });
+      // Check if it's the last checkbox and is being unchecked
+      if (questionData.options.length === 1 && updatedCorrectAnswer.length === 0) {
+        // Do nothing, allow unselection
+      } else {
+        setQuestionData({
+          ...questionData,
+          correctAnswer: updatedCorrectAnswer,
+        });
+      }
     } else {
       // If it's not selected, add it to the array
       const updatedCorrectAnswer = [...currentCorrectAnswer, selectedValue];
@@ -118,6 +76,7 @@ function Update({ match }) {
       });
     }
   };
+  
   
   const isAtLeastOneCorrectAnswerSelected = questionData.correctAnswer.length > 0;
   

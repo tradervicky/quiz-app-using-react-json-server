@@ -205,7 +205,9 @@
         "Dr Strange 2",
         "Fury"
       ],
-      "correctAnswer": "Dr Strange 2",
+      "correctAnswer": [
+        "Dr Strange 2"
+      ],
       "id": 6
     },
     {
@@ -310,13 +312,37 @@
         "Blue Lotus"
       ],
       "correctAnswer": [
-        "B",
-        "u",
-        "l",
-        "l",
         "Bull"
       ],
       "id": 14
+    },
+    {
+      "type": "single",
+      "catId": 1,
+      "text": "When IIEST Shibpur was established?",
+      "options": [
+        "2020",
+        "2004",
+        "2009",
+        "2014"
+      ],
+      "correctAnswer": "2014",
+      "id": 15
+    },
+    {
+      "type": "single",
+      "catId": 3,
+      "text": "dummy",
+      "options": [
+        "1",
+        "2",
+        "345",
+        "5"
+      ],
+      "correctAnswer": [
+        "345"
+      ],
+      "id": 16
     }
   ],
   "leaderboard": [
