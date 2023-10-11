@@ -41,29 +41,36 @@
       "name": "Code Bucket",
       "username": "code@bucket.in",
       "password": "123",
+      "AttemptedQue": [
+        11,
+        8,
+        12,
+        13,
+        7,
+        10,
+        9
+      ],
       "id": 2
     },
     {
-      "name": "test User",
-      "username": "test@cb.in",
-      "password": "test",
-      "id": 3,
       "AttemptedQue": [
-        7,
-        8
-      ]
+        11
+      ],
+      "id": 3
     },
     {
       "name": "Abhijit",
       "username": "abhijit@cb.in",
       "password": "12345",
-      "id": 4
+      "id": 4,
+      "AttemptedQue": []
     },
     {
       "name": "sachinkumar",
       "username": "sachin@cb.com",
       "password": "123456789",
-      "id": 5
+      "id": 5,
+      "AttemptedQue": []
     }
   ],
   "category": [
@@ -98,7 +105,7 @@
       ]
     },
     {
-      "text": "What is the scientific name of a butterfly??",
+      "text": "What is the scientific name of a butterfly?",
       "type": "single",
       "catId": 1,
       "id": 2,
@@ -351,6 +358,111 @@
       "score": 20,
       "username": "test User",
       "id": 14
+    },
+    {
+      "score": 40,
+      "username": "test User",
+      "id": 15
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 16
+    },
+    {
+      "score": 0,
+      "username": "Code Bucket",
+      "id": 17
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 18
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 19
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 20
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 21
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 22
+    },
+    {
+      "score": 20,
+      "username": "Code Bucket",
+      "id": 23
+    },
+    {
+      "score": 20,
+      "username": "Code Bucket",
+      "id": 24
+    },
+    {
+      "score": 0,
+      "username": "Code Bucket",
+      "id": 25
+    },
+    {
+      "score": 0,
+      "username": "Code Bucket",
+      "id": 26
+    },
+    {
+      "score": 40,
+      "username": "Code Bucket",
+      "id": 27
+    },
+    {
+      "score": 40,
+      "username": "Code Bucket",
+      "id": 28
+    },
+    {
+      "score": 20,
+      "username": "Code Bucket",
+      "id": 29
+    },
+    {
+      "score": 20,
+      "username": "Code Bucket",
+      "id": 30
+    },
+    {
+      "score": 0,
+      "username": "Code Bucket",
+      "id": 31
+    },
+    {
+      "score": 0,
+      "username": "Code Bucket",
+      "id": 32
+    },
+    {
+      "score": 0,
+      "username": "test User",
+      "id": 33
+    },
+    {
+      "score": 50,
+      "username": "test User",
+      "id": 34
+    },
+    {
+      "score": 20,
+      "username": "test User",
+      "id": 35
     }
   ],
   "answeredQuestions": [
