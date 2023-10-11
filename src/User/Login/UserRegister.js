@@ -28,7 +28,7 @@ function UserRegister() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({name, username, password }),
+          body: JSON.stringify({name, username, password, AttemptedQue: []}),
         });
   
         if (response.status === 201) {

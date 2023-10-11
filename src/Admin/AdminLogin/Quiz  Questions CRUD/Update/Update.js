@@ -43,48 +43,107 @@ function Update({ match }) {
       options: updatedOptions,
     });
   };
+  
+
+  // const handleCorrectAnswerChange = (e) => {
+  //   const selectedValue = e.target.value;
+
+  //   // Check if the value is already in the correctAnswer array
+  //   const isAlreadySelected = questionData.correctAnswer.includes(selectedValue);
+
+  //   if (isAlreadySelected) {
+  //     // If it's already selected, remove it from the array
+  //     const updatedCorrectAnswer = questionData.correctAnswer.filter(
+  //       (value) => value !== selectedValue
+  //     );
+
+  //     setQuestionData({
+  //       ...questionData,
+  //       correctAnswer: updatedCorrectAnswer,
+  //     });
+  //   } else {
+  //     // If it's not selected, add it to the array
+  //     const updatedCorrectAnswer = [...questionData.correctAnswer, selectedValue];
+
+  //     setQuestionData({
+  //       ...questionData,
+  //       correctAnswer: updatedCorrectAnswer,
+  //     });
+  //   }
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   // Send a PUT request to update the question
+  //   axios
+  //     .put(`http://localhost:8000/questions/${questionId}`, questionData)
+  //     .then((response) => {
+  //       // Handle success and provide feedback to the admin
+
+  //       toast.success("Updated successfully!", {
+  //         position: "top-right",
+  //         autoClose: 3000, // Auto close the notification after 3 seconds
+  //       });
+        
+  //       // console.log("Question updated successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error updating question:", error);
+  //       // Handle errors and display error messages
+  //     });
+  // };
 
   const handleCorrectAnswerChange = (e) => {
     const selectedValue = e.target.value;
-
-    // Check if the value is already in the correctAnswer array
-    const isAlreadySelected = questionData.correctAnswer.includes(selectedValue);
-
-    if (isAlreadySelected) {
+    const currentCorrectAnswer = questionData.correctAnswer;
+  
+    if (currentCorrectAnswer.includes(selectedValue)) {
       // If it's already selected, remove it from the array
-      const updatedCorrectAnswer = questionData.correctAnswer.filter(
+      const updatedCorrectAnswer = currentCorrectAnswer.filter(
         (value) => value !== selectedValue
       );
-
+  
       setQuestionData({
         ...questionData,
         correctAnswer: updatedCorrectAnswer,
       });
     } else {
       // If it's not selected, add it to the array
-      const updatedCorrectAnswer = [...questionData.correctAnswer, selectedValue];
-
+      const updatedCorrectAnswer = [...currentCorrectAnswer, selectedValue];
+  
       setQuestionData({
         ...questionData,
         correctAnswer: updatedCorrectAnswer,
       });
     }
   };
-
+  
+  const isAtLeastOneCorrectAnswerSelected = questionData.correctAnswer.length > 0;
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
+    if (!isAtLeastOneCorrectAnswerSelected) {
+      // Display an error message if no correct answers are selected
+      toast.error("At least one correct answer must be selected", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+  
     // Send a PUT request to update the question
     axios
       .put(`http://localhost:8000/questions/${questionId}`, questionData)
       .then((response) => {
         // Handle success and provide feedback to the admin
-
+  
         toast.success("Updated successfully!", {
           position: "top-right",
           autoClose: 3000, // Auto close the notification after 3 seconds
         });
-        
+  
         // console.log("Question updated successfully");
       })
       .catch((error) => {
@@ -92,6 +151,7 @@ function Update({ match }) {
         // Handle errors and display error messages
       });
   };
+  
 
   return (
     <div className="container-fluid">

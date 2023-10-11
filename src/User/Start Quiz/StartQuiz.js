@@ -110,49 +110,112 @@ function StartQuiz() {
 
   const currentQuestion = questions[currentQuestionIndex];
 
+  // const handleNextQuestion = () => {
+  //   if (currentQuestion) {
+  //     const isCorrect = selectedOptions.every((option) =>
+  //       currentQuestion.correctAnswer.includes(option)
+  //     );
+
+  //     if (isCorrect && timer > 0) {
+  //       setScore(score + 1);
+  //       localStorage.setItem("score", (score + 1).toString());
+  //     }
+
+  //     const currentQuestionId = currentQuestion.id;
+
+  //     if (answeredQuestions.includes(currentQuestionId)) {
+  //       console.log("Question already attempted");
+  //     } else {
+  //       const newAttemptedQuestions = [...answeredQuestions, currentQuestionId];
+
+  //       // Update the user's data in the db.json file
+  //       axios.put(`http://localhost:8000/users/${userId}`, { AttemptedQue: newAttemptedQuestions })
+  //         .then((response) => {
+  //           if (response.data.success) {
+  //             console.log("User's attempted questions updated successfully");
+  //           } else {
+  //             console.error("Failed to update user's attempted questions");
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error updating user's attempted questions", error);
+  //         });
+  //     }
+
+  //     setUserAnswers([...userAnswers, selectedOptions]);
+
+  //     if (currentQuestionIndex < questions.length - 1) {
+  //       setCurrentQuestionIndex(currentQuestionIndex + 1);
+  //       setSelectedOptions([]);
+  //       setTimer(30);
+  //     } else {
+  //       submitTest();
+  //     }
+  //   }
+  // };
+
   const handleNextQuestion = () => {
     if (currentQuestion) {
       const isCorrect = selectedOptions.every((option) =>
         currentQuestion.correctAnswer.includes(option)
       );
-
-      if (isCorrect && timer > 0) {
+  
+      if (isCorrect && timer !== 0) {
         setScore(score + 1);
-        localStorage.setItem("score", (score + 1).toString());
+        localStorage.setItem("score", score + 1);
       }
-
+  
       const currentQuestionId = currentQuestion.id;
-
-      if (answeredQuestions.includes(currentQuestionId)) {
-        console.log("Question already attempted");
-      } else {
-        const newAttemptedQuestions = [...answeredQuestions, currentQuestionId];
-
-        // Update the user's data in the db.json file
-        axios.put(`http://localhost:8000/users/${userId}`, { AttemptedQue: newAttemptedQuestions })
+  
+      if (!answeredQuestions.includes(currentQuestionId)) {
+        // Only add the ID if it's not already in the array
+        setAnsweredQuestions([...answeredQuestions, currentQuestionId]);
+        // Update the user's attempted questions
+        axios
+          .get(`http://localhost:8000/users/${userId}`)
           .then((response) => {
-            if (response.data.success) {
-              console.log("User's attempted questions updated successfully");
+            if (response.data) {
+              const user = response.data;
+              user.AttemptedQue = [...answeredQuestions, currentQuestionId];
+              
+              axios
+                .put(`http://localhost:8000/users/${userId}`, user)
+                .then((updateResponse) => {
+                  if (updateResponse.data.success) {
+                    console.log("User's attempted questions updated successfully");
+                  } else {
+                    console.error("Failed to update user's attempted questions");
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error updating user's attempted questions", error);
+                });
             } else {
-              console.error("Failed to update user's attempted questions");
+              console.error("User not found");
             }
           })
           .catch((error) => {
-            console.error("Error updating user's attempted questions", error);
+            console.error("Error fetching user data", error);
           });
       }
-
+  
       setUserAnswers([...userAnswers, selectedOptions]);
-
+  
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedOptions([]);
         setTimer(30);
       } else {
-        submitTest();
+        // If it's the last question, navigate to the score page
+        navigate(
+          `/result?score=${score}&numberOfQuestions=${numberOfQuestions}&nameLogin=${nameLogin}`
+        );
       }
     }
   };
+  
+  
+  
 
   const submitTest = () => {
     localStorage.clear();
