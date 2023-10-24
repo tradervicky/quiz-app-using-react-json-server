@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate,Link } from "react-router-dom";
 
 function StartQuiz() {
   const [searchParams] = useSearchParams();
@@ -21,8 +21,36 @@ function StartQuiz() {
   const [timer, setTimer] = useState(30);
   const [isMultipleChoice, setIsMultipleChoice] = useState(false);
 
+  //
+
+   // Initialize localStorage
+  //  const [questions, setQuestions] = useState(
+  //   JSON.parse(localStorage.getItem("questions")) || []
+  // );
+  // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
+  //   const savedCurrentQuestionIndex = parseInt(
+  //     localStorage.getItem("currentQuestionIndex")
+  //   );
+  //   return isNaN(savedCurrentQuestionIndex) ? 0 : savedCurrentQuestionIndex;
+  // });
+  // const [selectedOptions, setSelectedOptions] = useState(
+  //   JSON.parse(localStorage.getItem("selectedOptions")) || []
+  // );
+  // const [userAnswers, setUserAnswers] = useState(
+  //   JSON.parse(localStorage.getItem("userAnswers")) || []
+  // );
+  // const [score, setScore] = useState(
+  //   parseInt(localStorage.getItem("score")) || 0
+  // );
+  // const [timer, setTimer] = useState(
+  //   parseInt(localStorage.getItem("timer")) || 30
+  // );
+  // const [isMultipleChoice, setIsMultipleChoice] = useState(false);
+
+  //
+
   useEffect(() => {
-    // Fetch user's attempted questions
+    // user already visited these questions
     axios.get(`http://localhost:8000/users/${userId}`)
       .then((res) => {
         setAnsweredQuestions(res?.data?.AttemptedQue || []);
@@ -33,7 +61,7 @@ function StartQuiz() {
   }, [userId]);
 
   useEffect(() => {
-    // Fetch questions and initialize the quiz
+    //fetch question on the basis of selected type category and no of questions
     fetchQuestions(selectedCategory, selectedType, numberOfQuestions);
   }, [selectedCategory, selectedType, numberOfQuestions]);
 
@@ -43,7 +71,7 @@ function StartQuiz() {
       if (timer > 0) {
         setTimer(timer - 1);
       } else if (currentQuestionIndex === questions.length - 1) {
-        // Automatically submit the test when the timer ends on the last question
+        // submit the test if no questions remaininf
         submitTest();
       } else {
         handleNextQuestion();
@@ -172,7 +200,7 @@ function StartQuiz() {
     }
   };
   
-  
+  console.log(score)
   
 
   const submitTest = () => {
@@ -218,22 +246,54 @@ function StartQuiz() {
               ))}
             </div>
 
-            
-              
+            {currentQuestionIndex === questions.length - 1 ? (
+              <>
+                <button
+                  className="btn btn-primary mt-3"
+                  onClick={handleNextQuestion}
+                  disabled={isMultipleChoice ? false : !selectedOptions.length}
+                >
+                  Next
+                </button>
+                <button
+                  className="btn btn-primary mt-3"
+                  onClick={submitTest}
+                  disabled={!selectedOptions.length}
+                >
+                  Submit Test
+                </button>
+              </>
+            ) : (
               <button
                 className="btn btn-primary mt-3"
                 onClick={handleNextQuestion}
                 disabled={isMultipleChoice ? false : !selectedOptions.length}
               >
-                {currentQuestionIndex === questions.length - 1 ? "submit": "Next Question"}
+                Next Question
               </button>
+            )}
+
+
+              
+              {/* <button
+                className="btn btn-primary mt-3"
+                onClick={handleNextQuestion}
+                disabled={isMultipleChoice ? false : !selectedOptions.length}
+              >
+                {currentQuestionIndex === questions.length - 1 ? "submit": "Next Question"}
+              </button> */}
             
           </div>
         </div>
       ) : (
-        <h3 className="text-center " style={{ color: "white" }}>
-          No questions available. <br /> <span> Try Other Combination <br /> or select fewer questions</span>
-        </h3>
+        <div className="container-fluid mx-auto"> 
+        <form action="" className="mx-auto"><h3 className="text-center " style={{ color: "red" }}>
+        No questions available. <br /> <span> Try Other Combination <br /> or select fewer questions</span>
+      </h3>
+      <Link to='/'><button className="btn btn-primary mt-5 ">Log Out</button></Link>
+      </form>
+      </div>
+       
       )}
     </div>
   );

@@ -8,16 +8,7 @@ function Delete() {
   const questionId =parseInt( searchParams.get("selectdId"));
   const [selectedQuestion, setSelectedQuestion] = useState([]);
   
-//   const handleDelete = () => {
-//     // Send a request to delete the question
-//     axios
-//       .delete(`http://localhost:8000/questions/${questionId}`)
-//       .then((response) => {
-//       })
-//       .catch((error) => {
-//         console.error("Error deleting question:", error);
-//       });
-//   };
+
 const deleteQuestion =((questionId)=>{
     if(window.confirm("Do you want to delete?")){
         fetch(`http://localhost:8000/questions/${questionId}`,

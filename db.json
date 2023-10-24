@@ -24,6 +24,11 @@
       "username": "vick@cb.in",
       "password": "123",
       "id": 5
+    },
+    {
+      "username": "sanam@test.in",
+      "password": "sanam",
+      "id": 6
     }
   ],
   "users": [
@@ -32,10 +37,7 @@
       "name": "User",
       "username": "user@test.in",
       "password": "user",
-      "AttemptedQue": [
-        1,
-        2
-      ]
+      "AttemptedQue": []
     },
     {
       "name": "Code Bucket",
@@ -58,12 +60,11 @@
       "password": "test",
       "id": 3,
       "AttemptedQue": [
-        8,
         7,
-        10,
-        13,
-        12,
+        8,
         9,
+        13,
+        10,
         11
       ]
     },
@@ -92,14 +93,11 @@
       "username": "ramu@kaka.in",
       "password": "ramu",
       "AttemptedQue": [
-        12,
+        16,
         8,
-        7,
-        13,
-        9,
         10,
-        4,
-        2
+        11,
+        12
       ],
       "id": 6
     }
@@ -136,7 +134,7 @@
       ]
     },
     {
-      "text": "What is the scientific name of a butterfly?",
+      "text": "What is the scientific name of a butterfly !",
       "type": "single",
       "catId": 1,
       "id": 2,
@@ -328,21 +326,6 @@
       ],
       "correctAnswer": "2014",
       "id": 15
-    },
-    {
-      "type": "single",
-      "catId": 3,
-      "text": "dummy",
-      "options": [
-        "1",
-        "2",
-        "345",
-        "5"
-      ],
-      "correctAnswer": [
-        "345"
-      ],
-      "id": 16
     }
   ],
   "leaderboard": [
@@ -392,33 +375,33 @@
       "id": 9
     },
     {
-      "score": 80,
-      "username": "test User",
+      "score": 40,
+      "username": "Ramu Kaka",
       "id": 10
     },
     {
-      "score": 20,
+      "score": 80,
       "username": "test User",
       "id": 11
     },
     {
-      "score": 40,
+      "score": 80,
       "username": "test User",
       "id": 12
     },
     {
-      "score": 0,
+      "score": 100,
       "username": "test User",
       "id": 13
     },
     {
-      "score": 20,
-      "username": "test User",
+      "score": 80,
+      "username": "User",
       "id": 14
     },
     {
-      "score": 40,
-      "username": "test User",
+      "score": 0,
+      "username": "User",
       "id": 15
     },
     {
@@ -428,128 +411,33 @@
     },
     {
       "score": 0,
-      "username": "Code Bucket",
+      "username": "test User",
       "id": 17
     },
     {
-      "score": 0,
+      "score": 125,
       "username": "test User",
       "id": 18
     },
     {
-      "score": 0,
+      "score": 25,
       "username": "test User",
       "id": 19
     },
     {
-      "score": 0,
+      "score": 25,
       "username": "test User",
       "id": 20
     },
     {
-      "score": 0,
+      "score": 33,
       "username": "test User",
       "id": 21
     },
     {
-      "score": 0,
+      "score": 66,
       "username": "test User",
       "id": 22
-    },
-    {
-      "score": 20,
-      "username": "Code Bucket",
-      "id": 23
-    },
-    {
-      "score": 20,
-      "username": "Code Bucket",
-      "id": 24
-    },
-    {
-      "score": 0,
-      "username": "Code Bucket",
-      "id": 25
-    },
-    {
-      "score": 0,
-      "username": "Code Bucket",
-      "id": 26
-    },
-    {
-      "score": 40,
-      "username": "Code Bucket",
-      "id": 27
-    },
-    {
-      "score": 40,
-      "username": "Code Bucket",
-      "id": 28
-    },
-    {
-      "score": 20,
-      "username": "Code Bucket",
-      "id": 29
-    },
-    {
-      "score": 20,
-      "username": "Code Bucket",
-      "id": 30
-    },
-    {
-      "score": 0,
-      "username": "Code Bucket",
-      "id": 31
-    },
-    {
-      "score": 0,
-      "username": "Code Bucket",
-      "id": 32
-    },
-    {
-      "score": 0,
-      "username": "test User",
-      "id": 33
-    },
-    {
-      "score": 20,
-      "username": "test User",
-      "id": 34
-    },
-    {
-      "score": 20,
-      "username": "test User",
-      "id": 35
-    },
-    {
-      "score": 0,
-      "username": "test User",
-      "id": 36
-    },
-    {
-      "score": 0,
-      "username": "test User",
-      "id": 37
-    },
-    {
-      "score": 0,
-      "username": "Abhijit",
-      "id": 38
-    },
-    {
-      "score": 0,
-      "username": "Ramu Kaka",
-      "id": 39
-    },
-    {
-      "score": 0,
-      "username": "Ramu Kaka",
-      "id": 40
-    },
-    {
-      "score": 0,
-      "username": "Ramu Kaka",
-      "id": 41
     }
   ],
   "answeredQuestions": [

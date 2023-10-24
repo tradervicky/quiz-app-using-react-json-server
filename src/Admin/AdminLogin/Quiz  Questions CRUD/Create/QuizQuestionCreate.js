@@ -25,11 +25,6 @@ function QuizQuestionCreate() {
     }
   };
 
-  const handleAddOption = () => {
-    if (options.length < 4) {
-      setOptions([...options, ""]);
-    }
-  };
 
   const handleOptionChange = (index, value) => {
     const updatedOptions = [...options];
@@ -168,9 +163,6 @@ function QuizQuestionCreate() {
             )}
           </div>
         ))}
-        {options.length < 4 && (
-          <button onClick={handleAddOption}>Add Option</button>
-        )}
       </div>
       <button onClick={handleCreateQuestion} className="btn btn-primary mt-2">Create Question</button>
       <Link to='/quiz-questions'><button  className="btn btn-primary mt-2">Back</button></Link>

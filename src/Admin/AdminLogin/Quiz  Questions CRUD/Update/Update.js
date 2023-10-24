@@ -4,14 +4,14 @@ import { useSearchParams,Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
-function Update({ match }) {
+function Update() {
   const [searchParams] = useSearchParams();
   const questionId = parseInt(searchParams.get("selectdId"));
 
   const [questionData, setQuestionData] = useState({
     text: "",
     options: [],
-    correctAnswer: [], // Use an array to store correct answers
+    correctAnswer: [], 
   });
 
   useEffect(() => {

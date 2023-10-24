@@ -67,10 +67,10 @@ function Dashboard() {
       (category) => category.name === selectedCategory
     );
 
-    if (!selectedCategoryData) {
-      alert("Invalid category selected.");
-      return;
-    }
+    // if (!selectedCategoryData) {
+    //   alert("Invalid category selected.");
+    //   return;
+    // }
 
     const questionsAvailable = questionData.filter(
       (question) =>

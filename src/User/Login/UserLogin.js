@@ -23,18 +23,17 @@ function UserLogin() {
       setError("Please enter both email and password.");
       return;}
 
-    // Make a GET request to fetch user data from the JSON server
+    
     try {
       const response = await fetch(`http://localhost:8000/users?username=${username}`);
       const userData = await response.json();
       if (userData.length === 0) {
         setError("User not found. Please check your username.");
       } if (userData[0].password === password) {
-        // Password matches, log the user in (you can set a session or token here)
-         // Show a success toast notification
+        
       toast.success("Login successfully!", {
         position: "top-right",
-        autoClose: 3000, // Auto close the notification after 3 seconds
+        autoClose: 3000,
       });
         navigate(`/user-dashboard?username=${username}`)
         
